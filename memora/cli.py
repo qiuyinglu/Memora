@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-
-from memora.models import Concept
+import time
+from memora.models import Concept, ReviewEvent
 from memora.seed import make_sample_concepts
-from memora.scheduler import update_memory
+from memora.scheduler import update_memory, adjust_feedback
 from pathlib import Path
-from memora.storage import save_concepts, load_concepts
+from memora.storage import save_concepts, load_concepts, append_review_event
 
 
 def main():
@@ -60,15 +60,26 @@ def do_review(concepts):
         print("No concepts due. \n")
         return
 
+    start_time = time.time()
     target = min(due, key=lambda x: x.mastery)
 
+    #Review and collect feedbacks
     print("REVIEWING", format_concept(target))
     feedback = input("feedback (again/hard/good/easy) ").strip().lower()
+    self_report = input("Self report (too_hard / okay / too_easy), or Enter to skip: ").strip() or None
+    end_time = time.time()
+    time_spent = int(end_time - start_time)
     now = datetime.now()
 
-    update_memory(target, feedback, now)
+    adjusted = adjust_feedback(feedback, self_report)
 
+    update_memory(target, adjusted, now)
+
+    #Print result
     print(f"AFTER Concept(id: {target.id}), title: {target.title}, mastery: {target.mastery:.2f}, interval_days: {target.interval_days}, due_at: {target.due_at.date()}, last review at: {target.last_review_at.date() if target.last_review_at else "Never"}")
+
+    event = ReviewEvent(target.id, now, feedback, time_spent, self_report)
+    append_review_event(event)
     save_concepts(concepts)
 
 def add_concept(concepts):

@@ -1,5 +1,5 @@
 from memora.models import Concept
-from memora.scheduler import update_memory
+from memora.scheduler import update_memory, adjust_feedback
 from datetime import datetime, timedelta
 import pytest
 
@@ -39,3 +39,9 @@ def test_mastery_clamp_at_one():
     concept = Concept(1, "Sheathing", 0.95, 2, now - timedelta(days=1), None)
     update_memory(concept, "easy", now)
     assert concept.mastery == 1.00
+
+def test_adjust_feedback_too_hard_downgrades():
+    assert adjust_feedback("good", "too_hard") == "hard"
+
+def test_adjust_feedback_too_easy_upgrades():
+    assert adjust_feedback("hard", "too_easy") == "good"

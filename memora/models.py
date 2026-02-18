@@ -16,3 +16,5 @@ class ReviewEvent:
     concept_id: int
     timestamp:datetime
     feedback:str
+    time_spent_seconds: Optional[int] = None
+    self_report: Optional[str] = None

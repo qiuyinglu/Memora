@@ -31,6 +31,8 @@ def append_review_event(event: ReviewEvent) -> None:
         "concept_id": event.concept_id,
         "timestamp": event.timestamp.isoformat(),
         "feedback": event.feedback,
+        "time_spent_seconds": event.time_spent_seconds,
+        "self_report": event.self_report,
     }
 
     with REVIEWS_FILE.open("a", encoding="utf-8") as f:

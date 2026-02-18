@@ -37,3 +37,13 @@ def update_memory(concept: Concept, feedback: str, now: datetime) -> Concept:
 
     return concept
 
+def adjust_feedback(feedback: str, self_report: str | None) -> str:
+    levels = ["again", "hard", "good", "easy"]
+    i = levels.index(feedback)
+
+    if self_report == "too_hard":
+        return levels[max(0, i - 1)]
+    elif self_report == "too_easy":
+        return levels[min(3, i + 1)]
+    else:
+        return feedback
