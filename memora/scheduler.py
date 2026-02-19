@@ -21,7 +21,7 @@ def update_memory(concept: Concept, feedback: str, now: datetime) -> Concept:
         mastery_delta = +0.20
 
     else:
-        raise  ValueError(f"Unknow feedback: {feedback}")
+        raise ValueError(f"Unknown feedback: {feedback}")
 
     concept.interval_days = new_interval_days
 

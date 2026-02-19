@@ -2,8 +2,7 @@ import json
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
-
-from  memora.models import Concept, ReviewEvent
+from memora.models import Concept, ReviewEvent
 
 DATA_DIR = Path(__file__).parent / "data"
 CONCEPTS_FILE = DATA_DIR / "concepts.json"

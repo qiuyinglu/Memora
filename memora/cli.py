@@ -3,7 +3,6 @@ import time
 from memora.models import Concept, ReviewEvent
 from memora.seed import make_sample_concepts
 from memora.scheduler import update_memory, adjust_feedback
-from pathlib import Path
 from memora.storage import save_concepts, load_concepts, append_review_event
 
 
@@ -65,12 +64,25 @@ def do_review(concepts):
 
     #Review and collect feedbacks
     print("REVIEWING", format_concept(target))
-    feedback = input("feedback (again/hard/good/easy) ").strip().lower()
-    self_report = input("Self report (too_hard / okay / too_easy), or Enter to skip: ").strip() or None
+
+    valid_feedbacks = {"again", "hard", "good", "easy"}
+    while True:
+        feedback = input("feedback (again/hard/good/easy) ").strip().lower()
+        if feedback in valid_feedbacks:
+            break
+        print("Invalid input. Please enter: again / hard / good / easy")
+
+    valid_reports = {"too_hard", "okay", "too_easy", ""}
+    while True:
+        raw = input("Self report (too_hard / okay / too_easy), or Enter to skip: ").strip()
+        if raw in valid_reports:
+            self_report = raw or None
+            break
+        print("Invalid input. Please enter: too_hard / okay / too_easy, or press Enter")
+
     end_time = time.time()
     time_spent = int(end_time - start_time)
     now = datetime.now()
-
     adjusted = adjust_feedback(feedback, self_report)
 
     update_memory(target, adjusted, now)
