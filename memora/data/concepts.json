@@ -5,7 +5,8 @@
     "mastery": 0.15000000000000005,
     "interval_days": 1,
     "due_at": "2026-02-18T23:12:32.484387",
-    "last_review_at": "2026-02-17T23:12:32.484387"
+    "last_review_at": "2026-02-17T23:12:32.484387",
+    "ease_factor": 2.5
   },
   {
     "id": 2,
@@ -13,7 +14,8 @@
     "mastery": 0.7,
     "interval_days": 12,
     "due_at": "2026-02-28T18:40:41.888854",
-    "last_review_at": "2026-02-16T18:40:41.888854"
+    "last_review_at": "2026-02-16T18:40:41.888854",
+    "ease_factor": 2.5
   },
   {
     "id": 3,
@@ -21,7 +23,8 @@
     "mastery": 0.1,
     "interval_days": 4,
     "due_at": "2026-02-18T18:39:18.419791",
-    "last_review_at": null
+    "last_review_at": null,
+    "ease_factor": 2.5
   },
   {
     "id": 4,
@@ -29,7 +32,8 @@
     "mastery": 0.1,
     "interval_days": 2,
     "due_at": "2026-02-19T18:39:18.419791",
-    "last_review_at": null
+    "last_review_at": null,
+    "ease_factor": 2.5
   },
   {
     "id": 5,
@@ -37,14 +41,16 @@
     "mastery": 0.3,
     "interval_days": 3,
     "due_at": "2026-02-20T18:39:18.419791",
-    "last_review_at": null
+    "last_review_at": null,
+    "ease_factor": 2.5
   },
   {
     "id": 6,
     "title": "Fire-Rated Assemblies",
     "mastery": 0.0,
     "interval_days": 1,
-    "due_at": "2026-02-18T21:54:48.601316",
-    "last_review_at": null
+    "due_at": "2026-02-23T18:54:26.013908",
+    "last_review_at": "2026-02-22T18:54:26.013908",
+    "ease_factor": 1.96
   }
 ]

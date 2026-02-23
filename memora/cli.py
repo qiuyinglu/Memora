@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 import time
 from memora.models import Concept, ReviewEvent
 from memora.seed import make_sample_concepts
-from memora.scheduler import update_memory, adjust_feedback
+from memora.scheduler import adjust_feedback, update_memory_sm2
 from memora.storage import save_concepts, load_concepts, append_review_event
-
+from memora.analytics import load_reviews, compute_concept_stats, get_struggling_concepts
 
 def main():
     concepts = load_concepts()
@@ -31,7 +31,8 @@ def run_menu(concepts):
         print("1. Review due concepts")
         print("2. Add new concept")
         print("3. List all concepts")
-        print("4. Quit")
+        print("4. View stats")
+        print("5. Quit")
 
         #User's input
         choice = input("Choose: ").strip()
@@ -43,6 +44,9 @@ def run_menu(concepts):
         elif choice == "3":
             list_concepts(concepts)
         elif choice == "4":
+            view_stats(concepts)
+        elif choice == "5":
+            print("Goodbye!")
             break
         else:
             print("Invalid choice.")
@@ -85,7 +89,7 @@ def do_review(concepts):
     now = datetime.now()
     adjusted = adjust_feedback(feedback, self_report)
 
-    update_memory(target, adjusted, now)
+    update_memory_sm2(target, adjusted, now)
 
     #Print result
     print(f"AFTER Concept(id: {target.id}), title: {target.title}, mastery: {target.mastery:.2f}, interval_days: {target.interval_days}, due_at: {target.due_at.date()}, last review at: {target.last_review_at.date() if target.last_review_at else "Never"}")
@@ -109,6 +113,22 @@ def list_concepts(concepts):
     for c in concepts.values():
         print(format_concept(c))
 
+def view_stats(concepts):
+    """Display per-concept statistics and struggling concepts."""
+
+    reviews = load_reviews()
+    stats = compute_concept_stats(concepts, reviews)
+    struggling = get_struggling_concepts(stats)
+    print("=== Concept Stats ===")
+    for concept_id, s in stats.items():
+        avg_str = f"{s['avg_time_seconds']:.1f}s" if s['avg_time_seconds'] is not None else "N/A"
+        print(f"{concept_id}: {s['title']} | Reviews: {s['review_count']} | "
+              f"Avg Time: {avg_str} | Mastery: {s['current_mastery']:.2f} | "
+              f"Overdue: {'Yes' if s['is_overdue'] else 'No'}")
+
+    print("\n=== Most Struggling Concepts ===")
+    for s in struggling:
+        print(f"{s['title']} | Mastery: {s['current_mastery']:.2f} | Reviews: {s['review_count']}")
 
 if __name__ == "__main__":
         main()

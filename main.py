@@ -1,1 +1,4 @@
-print("Hello Memora")
+from memora.cli import main
+
+if __name__ == "__main__":
+    main()

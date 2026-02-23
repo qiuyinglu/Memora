@@ -7,6 +7,7 @@ from memora.models import Concept, ReviewEvent
 DATA_DIR = Path(__file__).parent / "data"
 CONCEPTS_FILE = DATA_DIR / "concepts.json"
 REVIEWS_FILE = DATA_DIR / "reviews.jsonl"
+GRAPH_FILE = DATA_DIR / "graph.json"
 
 def _concept_to_dict(c: Concept) -> dict:
     d = asdict(c)
@@ -55,4 +56,23 @@ def load_concepts(file_path: Path | None = None) -> dict[int, Concept]:
         conceptDict[c.id] = c
 
     return conceptDict
+
+def save_graph(graph: dict[int, list[int]], file_path: Path | None = None) -> None:
+    if file_path is None:
+        file_path = GRAPH_FILE
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+
+    file_path.write_text(json.dumps(graph, ensure_ascii=False, indent=2), encoding="utf-8")
+
+def load_graph(file_path: Path | None = None) -> dict[int, list[int]]:
+    if file_path is None:
+        file_path = GRAPH_FILE
+    
+    if not file_path.exists():
+        return {}
+
+    data = json.loads(file_path.read_text(encoding="utf-8"))
+    return {int(k): v for k, v in data.items()}
+
+
 

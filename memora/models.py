@@ -10,6 +10,7 @@ class Concept:
     interval_days: int
     due_at: datetime
     last_review_at: Optional[datetime] = None
+    ease_factor: float = 2.5
 
 @dataclass
 class ReviewEvent:
