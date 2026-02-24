@@ -3,8 +3,9 @@ import time
 from memora.models import Concept, ReviewEvent
 from memora.seed import make_sample_concepts
 from memora.scheduler import adjust_feedback, update_memory_sm2
-from memora.storage import save_concepts, load_concepts, append_review_event
+from memora.storage import save_concepts, load_concepts, append_review_event, save_graph, load_graph
 from memora.analytics import load_reviews, compute_concept_stats, get_struggling_concepts
+from memora.graph import build_graph, add_edge, topological_sort, recommended_study_order, print_graph
 
 def main():
     concepts = load_concepts()
@@ -32,7 +33,9 @@ def run_menu(concepts):
         print("2. Add new concept")
         print("3. List all concepts")
         print("4. View stats")
-        print("5. Quit")
+        print("5. Study order recommendation")
+        print("6. Show knowledge graph")
+        print("7. Quit")
 
         #User's input
         choice = input("Choose: ").strip()
@@ -46,6 +49,10 @@ def run_menu(concepts):
         elif choice == "4":
             view_stats(concepts)
         elif choice == "5":
+            show_study_order(concepts)
+        elif choice == "6":
+            show_graph(concepts)
+        elif choice == "7":
             print("Goodbye!")
             break
         else:
@@ -128,7 +135,27 @@ def view_stats(concepts):
 
     print("\n=== Most Struggling Concepts ===")
     for s in struggling:
-        print(f"{s['title']} | Mastery: {s['current_mastery']:.2f} | Reviews: {s['review_count']}")
+        print(f"{s['title']} | Mastery: {s['current_mastery']:.2f} | Reviews: {s['review_count']} \n")
+
+def show_study_order(concepts):
+    graph = load_graph()
+
+    if not graph:
+        graph = build_graph(concepts)
+        save_graph(graph)
+
+    order = recommended_study_order(concepts, graph)
+    print("=== Recommended Study Order ===")
+    for i, c in enumerate(order, 1):
+        status = "⚠️ OVERDUE" if c.due_at < datetime.now() else ""
+        print(f" {i}. {c.title} (mastery={c.mastery:.2f}) {status} \n")
+
+def show_graph(concepts):
+    graph = load_graph()
+    if not graph:
+        graph = build_graph(concepts)
+        save_graph(graph)
+    print_graph(concepts, graph)
 
 if __name__ == "__main__":
         main()
