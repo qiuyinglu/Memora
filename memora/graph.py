@@ -70,8 +70,8 @@ def print_graph(concepts: dict[int, Concept], graph: dict[int, list[int]]) -> No
         neighbor_text = ", ".join(neighbor_strs)
         title = concepts[node_id].title
         if neighbors:
-            print(f"{title}({node_id}) → {neighbor_text}")
+            print(f"{title}({node_id}) -> {neighbor_text}")
         else:
-            print(f"{title}({node_id}) → (no dependents)")
+            print(f"{title}({node_id}) -> (no dependents)")
 
     print(f"Total: {len(concepts)} concepts, {total_edges} edges \n")
