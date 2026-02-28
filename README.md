@@ -167,7 +167,7 @@ SM-2 shows higher average mastery, higher minimum mastery, and fewer overdue rev
 - Simulation uses random feedback, not real user data.
 - No multi-device synchronization, all data is stored locally.
 - Testing covers core logic but lacks integration tests.
-- Currently dosen't support multimedia content (e.g., images, audio) for concepts, which could enhance learning for certain subjects.
+- Currently doesn't support multimedia content (e.g., images, audio) for concepts, which could enhance learning for certain subjects.
 - The system does not currently implement a review history visualization, which could help users track their progress over time.
-- The DAG structure does not currently support detect the dependency relationship automatically from the concept title, which could be a useful feature for users who are not sure how to structure their knowledge graph.
+- The DAG structure does not currently support detecting the dependency relationship automatically from the concept title, which could be a useful feature for users who are not sure how to structure their knowledge graph.
 
