@@ -8,6 +8,13 @@ Memora is an adaptive learning system designed to support long-term memory throu
 - CLI interface: Users can add concepts, review due items, and view the concept list through a command-line interface.
 - Data persistence: All data is stored in JSON Lines format for easy access and analysis.
 
+## Overview
+![Memora System Overview](./assets/readme_demo_1.png)
+
+![Memora Algorithm & CLI Demo](./assets/readme_demo_2.png)
+
+![Memora Data Visualization](./assets/readme_demo_3.png)
+
 ## Data Model
 
 ### Concept
